@@ -53,7 +53,7 @@ public class TodoController {
 		throw new PathVariableExpectedException(id);
 	}
 
-	@ApiOperation(value = "Create a Todo from a TodoFrom")
+	@ApiOperation(value = "Create a Todo from a TodoForm")
 	@ApiResponses(value = {
 					@ApiResponse(code = 201, message = "Successfully created Todo from TodoForm"),
 					@ApiResponse(code = 400, message = "Failed to Create Todo from TodoForm - `title` was missing")

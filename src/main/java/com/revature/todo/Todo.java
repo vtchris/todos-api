@@ -41,12 +41,39 @@ public class Todo {
 	@JacksonXmlProperty
 	@ApiModelProperty(notes = "Whether the Todo has been completed")
 	private boolean completed;
+	
+	@Column(name = "category")
+	@JacksonXmlProperty
+	@ApiModelProperty(notes = "Category of the todo")
+	private String category;
+	
+	@Column(name = "user")
+	@JacksonXmlProperty
+	@ApiModelProperty(notes = "User associated with the todo")
+	private String user;
+	
+	@Column(name = "priority")
+	@JacksonXmlProperty
+	@ApiModelProperty(notes = "Whether the Todo is high priority")
+	private boolean priority;
+	
+	@Column(name = "due_date")
+	@JacksonXmlProperty
+	@ApiModelProperty(notes = "Date the Todo must be completed")
+	private LocalDate dueDate;
 
 	public Todo() {}
 
 	public Todo(TodoForm form) {
 		this.id = form.getId();
 		this.title = form.getTitle();
+		//This line wasn't present in original implementation.  Oversight or confusion on my part?
+		this.completed = form.isCompleted();
+		this.category = form.getCategory();
+		this.user = form.getUser();
+		this.dueDate = form.getDueDate();
+		this.priority = form.isPriority();
+		
 	}
 
 	public long getId() {
@@ -81,20 +108,84 @@ public class Todo {
 		this.completed = completed;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Todo todo = (Todo) o;
-		return id == todo.id &&
-						completed == todo.completed &&
-						Objects.equals(title, todo.title) &&
-						Objects.equals(createdOn, todo.createdOn);
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public boolean isPriority() {
+		return priority;
+	}
+
+	public void setPriority(boolean priority) {
+		this.priority = priority;
+	}
+
+	public LocalDate getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(LocalDate dueDate) {
+		this.dueDate = dueDate;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title, createdOn, completed);
+		return Objects.hash(id, title, createdOn, completed, category, user, priority, dueDate);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Todo other = (Todo) obj;
+		if (category == null) {
+			if (other.category != null)
+				return false;
+		} else if (!category.equals(other.category))
+			return false;
+		if (completed != other.completed)
+			return false;
+		if (createdOn == null) {
+			if (other.createdOn != null)
+				return false;
+		} else if (!createdOn.equals(other.createdOn))
+			return false;
+		if (dueDate == null) {
+			if (other.dueDate != null)
+				return false;
+		} else if (!dueDate.equals(other.dueDate))
+			return false;
+		if (id != other.id)
+			return false;
+		if (priority != other.priority)
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
+		return true;
 	}
 
 	@Override
@@ -104,6 +195,10 @@ public class Todo {
 						.add("title='" + title + "'")
 						.add("createdOn=" + createdOn)
 						.add("completed=" + completed)
+						.add("category=" + category)
+						.add("user=" + user)
+						.add("priority=" + priority)
+						.add("dueDate=" + dueDate)
 						.toString();
 	}
 }
