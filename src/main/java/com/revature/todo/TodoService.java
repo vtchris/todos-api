@@ -32,6 +32,10 @@ public class TodoService {
 		Todo found = todoRepository.findById(form.getId()).orElseThrow(() -> new TodoNotFoundException(form.getId()));
 		found.setTitle(form.getTitle());
 		found.setCompleted(form.isCompleted());
+		found.setCategory(form.getCategory());
+		found.setUser(form.getUser());
+		found.setDueDate(form.getDueDate());
+		found.setPriority(form.isPriority());
 		return todoRepository.save(found);
 	}
 
